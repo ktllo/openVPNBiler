@@ -1,0 +1,11 @@
+#### VPN Biller Sample Config
+
+### Database config
+## db.host - The DB server
+## db.user - The user name for db server
+## db.pass - The password for db server
+## db.name - The name for the database
+
+### OpenVPN info
+## console.port - post for the OpenVON console
+## console.host - host for the OpenVPN console
