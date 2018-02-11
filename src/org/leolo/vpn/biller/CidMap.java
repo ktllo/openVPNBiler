@@ -47,7 +47,7 @@ class CidMapHandler extends Thread{
 		 *  9	Client ID,
 		 * 10	Peer ID 
 		 */
-		logger.info("CID:{} is {}, connected at {}", list.get(9), list.get(0), list.get(6));
+		logger.debug("CID:{} is {}, connected at {}", list.get(9), list.get(0), list.get(6));
 		if(UsageCache.getInstance().cache.containsKey(Integer.parseInt(list.get(9)))){
 			if(UsageCache.getInstance().cache.get(Integer.parseInt(list.get(9))).cn == null){
 				UsageCache.getInstance().cache.get(Integer.parseInt(list.get(9))).cn=list.get(0);

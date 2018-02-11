@@ -10,7 +10,7 @@ public class SplitJob implements Job{
 	Logger logger = LoggerFactory.getLogger(SplitJob.class);
 	@Override
 	public void execute(JobExecutionContext arg0) throws JobExecutionException {
-		logger.info("Job started");
+		logger.debug("Job started");
 		UsageCache.getInstance().split();
 	}
 }

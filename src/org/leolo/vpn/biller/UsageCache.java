@@ -128,7 +128,7 @@ public class UsageCache {
 				@Override
 				public void run() {
 					try{
-						logger.info("Inserting the usage record");
+						logger.debug("Inserting the usage record");
 						Connection conn = DBManager.getInstance().getConnection();
 						PreparedStatement pstmt = conn.prepareStatement("INSERT INTO "
 								+ "sessions (`commonName`,`connected`,`disconnected`,`bytein`,`byteout`) VALUES "
@@ -139,7 +139,7 @@ public class UsageCache {
 						pstmt.setLong(4, recv);
 						pstmt.setLong(5, sent);
 						boolean result = pstmt.execute();
-						logger.info("Finish the usage record, result {}", result);
+						logger.debug("Finish the usage record, result {}", result);
 						pstmt.close();
 						conn.close();
 					}catch(SQLException e){

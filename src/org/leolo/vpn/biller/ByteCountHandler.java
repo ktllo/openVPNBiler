@@ -21,7 +21,7 @@ public class ByteCountHandler extends Thread{
 		int cid = Integer.parseInt(st.nextToken());
 		long recv = Long.parseLong(st.nextToken());
 		long sent = Long.parseLong(st.nextToken());
-		logger.info("cid:{} recv:{} send:{} total:{}", cid, recv, sent, recv+sent);
+		logger.debug("cid:{} recv:{} send:{} total:{}", cid, recv, sent, recv+sent);
 		if(UsageCache.getInstance().update(cid, recv, sent)==1){
 			main.pw.println("status 2");
 			main.pw.flush();

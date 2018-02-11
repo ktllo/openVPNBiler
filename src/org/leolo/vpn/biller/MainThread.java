@@ -64,7 +64,7 @@ public class MainThread extends Thread{
 					//Throws away data from status
 					continue;
 				}
-				logger.info(line);
+				logger.debug(line);
 			}
 		} catch (NumberFormatException e) {
 			logger.error(e.getLocalizedMessage(),e);
