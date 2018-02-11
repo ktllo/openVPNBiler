@@ -48,6 +48,15 @@ class CidMapHandler extends Thread{
 		 * 10	Peer ID 
 		 */
 		logger.info("CID:{} is {}, connected at {}", list.get(9), list.get(0), list.get(6));
+		if(UsageCache.getInstance().cache.containsKey(Integer.parseInt(list.get(9)))){
+			if(UsageCache.getInstance().cache.get(Integer.parseInt(list.get(9))).cn == null){
+				UsageCache.getInstance().cache.get(Integer.parseInt(list.get(9))).cn=list.get(0);
+				UsageCache.getInstance().cache.get(Integer.parseInt(list.get(9))).connected = Long.parseLong(list.get(7))*1000;
+				logger.info("CN info mapped");
+			}
+		}else{
+			logger.info("No matching keys");
+		}
 	}
 	
 	class Tokenizer{

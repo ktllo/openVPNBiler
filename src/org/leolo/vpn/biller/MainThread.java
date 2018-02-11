@@ -15,12 +15,9 @@ import org.slf4j.LoggerFactory;
 public class MainThread extends Thread{
 	private Logger logger = LoggerFactory.getLogger(MainThread.class);
 	
-	private Properties prop;
-	private ExecutorService threadPool;
+
 	
-	MainThread(Properties prop, ExecutorService  threadPool){
-		this.prop = prop;
-		this.threadPool = threadPool;
+	MainThread(){
 	}
 	
 	public void run(){
@@ -36,11 +33,11 @@ public class MainThread extends Thread{
 	PrintWriter pw;
 	private void mainLoop(){
 		try {
-			logger.info("Connecting to {}:{}",prop.getProperty("console.host", "localhost"), 
-					Integer.parseInt(prop.getProperty("console.port")));
+			logger.info("Connecting to {}:{}",SharedResource.getInstance().prop.getProperty("console.host", "localhost"), 
+					Integer.parseInt(SharedResource.getInstance().prop.getProperty("console.port")));
 			Socket s = new Socket(
-						prop.getProperty("console.host", "localhost"), 
-						Integer.parseInt(prop.getProperty("console.port")));
+					SharedResource.getInstance().prop.getProperty("console.host", "localhost"), 
+						Integer.parseInt(SharedResource.getInstance().prop.getProperty("console.port")));
 			BufferedReader br = new BufferedReader(new InputStreamReader(s.getInputStream()));
 			logger.info("Connected!");
 			pw = new PrintWriter(s.getOutputStream());
@@ -51,10 +48,10 @@ public class MainThread extends Thread{
 				if(line==null){
 					break;
 				}else if(line.startsWith(">BYTECOUNT_CLI:")){
-					threadPool.submit(new ByteCountHandler(this, line.substring(15)));
+					SharedResource.getInstance().threadPool.submit(new ByteCountHandler(this, line.substring(15)));
 					continue;
 				}else if(line.startsWith("CLIENT_LIST,")){
-					threadPool.submit(new CidMapHandler(this, line.substring(12)));
+					SharedResource.getInstance().threadPool.submit(new CidMapHandler(this, line.substring(12)));
 					continue;
 				}else if(
 						line.startsWith("TITLE,") ||
@@ -74,7 +71,7 @@ public class MainThread extends Thread{
 		} catch (UnknownHostException e) {
 			logger.error(e.getLocalizedMessage(),e);
 		} catch (IOException e) {
-			logger.error(e.getLocalizedMessage(),e);
+//			logger.error(e.getLocalizedMessage(),e);
 		}
 		
 	}

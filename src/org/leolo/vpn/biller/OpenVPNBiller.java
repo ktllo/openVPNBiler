@@ -38,11 +38,18 @@ public class OpenVPNBiller {
 		}
 		ExecutorService threadPool = new ThreadPoolExecutor(1, 10, 180L, TimeUnit.SECONDS,
 				new SynchronousQueue<Runnable>());
-		new MainThread(prop, threadPool).start();
+		SharedResource.getInstance().prop = prop;
+		SharedResource.getInstance().threadPool = threadPool;
+		new MainThread().start();
 		DBManager.getInstance();
-		JobDetail job = newJob(CleanupJob.class).withIdentity("myJob", "group1").build();
-		Trigger trigger = newTrigger().withIdentity("trigger3", "group1").withSchedule(cronSchedule("0 * * * * ?"))
-				.forJob("myJob", "group1").build();
+		JobDetail job = newJob(CleanupJob.class).withIdentity("staleJob", "mainGroup").build();
+		Trigger trigger = newTrigger().withIdentity("staleTrigger", "mainGroup")
+				.withSchedule(cronSchedule("0 * * * * ?"))
+				.forJob("staleJob", "mainGroup").build();
+		JobDetail job2 = newJob(SplitJob.class).withIdentity("splitJob", "mainGroup").build();
+		Trigger trigger2 = newTrigger().withIdentity("splitTrigger", "mainGroup")
+				.withSchedule(cronSchedule("0 0 * * * ?"))
+				.forJob("splitJob", "mainGroup").build();
 		SchedulerFactory schedFact = new org.quartz.impl.StdSchedulerFactory();
 
 		Scheduler sched;
@@ -50,6 +57,8 @@ public class OpenVPNBiller {
 			sched = schedFact.getScheduler();
 			sched.start();
 			sched.scheduleJob(job, trigger);
+			sched.scheduleJob(job2, trigger2);
+			
 		} catch (SchedulerException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
