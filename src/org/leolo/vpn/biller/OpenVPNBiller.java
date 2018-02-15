@@ -50,6 +50,10 @@ public class OpenVPNBiller {
 		Trigger trigger2 = newTrigger().withIdentity("splitTrigger", "mainGroup")
 				.withSchedule(cronSchedule("0 0 * * * ?"))
 				.forJob("splitJob", "mainGroup").build();
+		JobDetail job3 = newJob(ExportJob.class).withIdentity("exportJob", "mainGroup").build();
+		Trigger trigger3 = newTrigger().withIdentity("exportTrigger", "mainGroup")
+				.withSchedule(cronSchedule("0 15 */3 * * ?"))
+				.forJob("exportJob", "mainGroup").build();
 		SchedulerFactory schedFact = new org.quartz.impl.StdSchedulerFactory();
 
 		Scheduler sched;
@@ -58,6 +62,7 @@ public class OpenVPNBiller {
 			sched.start();
 			sched.scheduleJob(job, trigger);
 			sched.scheduleJob(job2, trigger2);
+			sched.scheduleJob(job3, trigger3);
 			
 		} catch (SchedulerException e) {
 			// TODO Auto-generated catch block

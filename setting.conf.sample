@@ -9,3 +9,6 @@
 ### OpenVPN info
 ## console.port - post for the OpenVON console
 ## console.host - host for the OpenVPN console
+
+### Export info
+## host.name - host name identifier
